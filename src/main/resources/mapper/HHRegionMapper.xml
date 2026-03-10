@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须和Mapper接口全路径一致 -->
+<mapper namespace="cn.huahai.mapper.HHRegionMapper">
+
+    <!-- 自定义查询：根据省份查城市（去重） -->
+    <select id="selectCityByProvince" resultType="java.lang.String">
+        SELECT DISTINCT city
+        FROM HH_region
+        WHERE province = #{province}
+          AND status = 'enable'
+        ORDER BY sort ASC
+    </select>
+
+    <!-- 自定义查询：根据省份+城市查区县 -->
+    <select id="selectDistrictByProvinceAndCity" resultType="cn.huahai.entity.HHRegion">
+        SELECT region_id, province, city, district, full_name, sort
+        FROM HH_region
+        WHERE province = #{province}
+          AND city = #{city}
+          AND status = 'enable'
+        ORDER BY sort ASC
+    </select>
+
+</mapper>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.huahai.mapper.HHSysRoleMenuMapper">
+
+    <!-- 根据角色ID删除菜单关联 -->
+    <delete id="deleteByRoleId">
+        DELETE FROM hh_sys_role_menu
+        WHERE role_id = #{roleId}
+    </delete>
+
+    <!-- 批量插入角色菜单（适配 MyBatis-Plus insertBatchSomeColumn） -->
+    <insert id="insertBatchSomeColumn">
+        INSERT INTO hh_sys_role_menu (role_id, menu_id, create_time)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.roleId}, #{item.menuId}, #{item.createTime})
+        </foreach>
+    </insert>
+
+    <!-- ========== 仅新增这一段，其余完全不变 ========== -->
+    <!-- 根据角色ID查询关联的菜单ID（前端回显勾选状态用） -->
+    <select id="selectMenuIdsByRoleId" resultType="java.lang.Integer">
+        SELECT menu_id FROM hh_sys_role_menu WHERE role_id = #{roleId}
+    </select>
+
+</mapper>
